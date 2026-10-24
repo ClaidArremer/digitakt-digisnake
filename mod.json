@@ -1,0 +1,70 @@
+{
+ "id": "digisnake-dt",
+ "version": "0.2",
+ "title": "DIGISNAKE-DT",
+ "category": "Sequencer",
+ "license": "GPL-2.0-or-later",
+ "author": "Robbie",
+ "description": "DIGISNAKE for the Digitakt mk1: a Cartesian step sequencer after MDD Snake (and Make Noise's Rene). Eight steps in a 4 x 2 grid that matches knobs A-H, walked by a path in one of seven shapes, forwards, backwards, ping-pong or at random. Per track, audio (the sample's pitch) and MIDI: NOTES, GATES and VELOCITY pages and a PATH page (ON, SHAPE, DIR, LEN, DIV 1/8 .. 1X and 2X (the track at twice its speed, in per-track SCALE mode), SCALE, RANGE, SHIFT). Press TRIG on the TRIG page to open it; LEFT/RIGHT change page, hold TRIG + YES randomises a page, FUNC + YES all of them, TRIG + REC / STOP copy and paste, TRIG + PLAY clears, TRIG + FUNC + REC prints the snake into the track's trigs, notes and velocities. Not saved with the project yet: print to keep. For OS 1.53 and 1.54; needs core 3.0 and seq-events.",
+ "device": "digitakt-mk1",
+ "os": "1.53",
+ "sources": [
+  "digisnake_dt.c"
+ ],
+ "cflags": [
+  "-DSNK_PATTERN_PP=0x4199dc38",
+  "-DSNK_TRANSPORT=0x4199dc2c"
+ ],
+ "ports": {
+  "1.54": {
+   "cflags": [
+    "-DSNK_PATTERN_PP=0x4199ec38",
+    "-DSNK_TRANSPORT=0x4199ec2c"
+   ]
+  }
+ },
+ "subscribe": [
+  {
+   "event": "ev_gen_trig",
+   "fn": "digisnake_trig",
+   "order": 50
+  },
+  {
+   "event": "ev_gen_notes",
+   "fn": "digisnake_notes",
+   "order": 50
+  },
+  {
+   "event": "ev_fire_vel",
+   "fn": "digisnake_vel",
+   "order": 50
+  },
+  {
+   "event": "ev_key",
+   "fn": "digisnake_key",
+   "order": 40
+  },
+  {
+   "event": "ev_enc",
+   "fn": "digisnake_enc",
+   "order": 40
+  },
+  {
+   "event": "ev_tick",
+   "fn": "digisnake_tick",
+   "order": 50
+  },
+  {
+   "event": "ev_draw",
+   "fn": "digisnake_draw",
+   "order": 90
+  }
+ ],
+ "resources": {
+  "core": "3.0"
+ },
+ "requires": [
+  "core",
+  "seq-events"
+ ]
+}
