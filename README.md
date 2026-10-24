@@ -29,14 +29,14 @@ By Robbie (tested on a Digitakt mk1, OS 1.54). GPL-2.0-or-later.
 
 ## Install
 
-In the elekloader app, add both files for your OS from `elemods/`: `digisnake-dt-0.2-os1.54.elemod` and
+In the elekloader app, add both files for your OS from `elemods/`: `digisnake-dt-0.3-os1.54.elemod` and
 `seq-events-dt-0.1-os1.54.elemod` (or the two `-os1.53` files). Tick both, keep the app's core ticked,
 build, and send the firmware to the Digitakt. From the command line:
 
 ```
 python -m elekloader.patch --stock Digitakt_OS1.54.syx \
   --mod core-4.1-os1.54.elemod --mod elemods/seq-events-dt-0.1-os1.54.elemod \
-  --mod elemods/digisnake-dt-0.2-os1.54.elemod --out Digitakt_digisnake.syx
+  --mod elemods/digisnake-dt-0.3-os1.54.elemod --out Digitakt_digisnake.syx
 ```
 
 It combines with other Digitakt mods: tested on a unit in one build with
@@ -100,10 +100,18 @@ random run.
   drawn over the TRIG page; short messages show on its bottom line instead of a drop-down.
 - **No Mod Menu** (the Digitakt core has none).
 - **Scales** are rooted on the track's NOTE (the Digitakt has no keyboard ROOT).
-- **No DIRECT JUMP link** (DIRECT JUMP is a Digitone mod).
+
+## With DIRECT JUMP
+
+With [DIRECT JUMP for the Digitakt](https://github.com/ClaidArremer/digitakt-directjump) (digitakt-directjump 1.0)
+in the build, a pattern started by its START ON BAR (from step 1 on the next bar line, or the playing pattern
+relaunched on the beat) starts every snake from the beginning of its path too, so the whole groove relaunches
+together. A legato jump leaves the snakes walking. Without DIRECT JUMP nothing changes. Tested on a Digitakt
+mk1 (OS 1.54).
 
 ## Changes
 
+- **0.3**: snakes relaunch with DIRECT JUMP's pattern starts.
 - **0.2**: the 2X division; PRINT writes velocities.
 - **0.1**: the first version, ported from DIGISNAKE for Digitone 1.2.
 
@@ -116,7 +124,8 @@ know when the TRIG page is up, and draws over it from `ev_draw`. PRINT and 2X wr
 bytes a track, its step words at +0, each step's VEL at +0x80 (255: the track's), note lock 1 at +0x280, the
 track's SCALE at +0x38b; the pattern pointer and the transport are the per-OS addresses seq-events uses
 (`mod.json`'s cflags). The pattern offsets were measured in digiemu by changing a value on the unit and
-comparing the pattern before and after.
+comparing the pattern before and after. DIRECT JUMP's count of pattern starts, `dj_starts`, is a weak import:
+a build without DIRECT JUMP links it to core's zero word.
 
 ## Building
 

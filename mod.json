@@ -1,6 +1,6 @@
 {
  "id": "digisnake-dt",
- "version": "0.2",
+ "version": "0.3",
  "title": "DIGISNAKE-DT",
  "category": "Sequencer",
  "license": "GPL-2.0-or-later",
@@ -63,6 +63,9 @@
  "resources": {
   "core": "3.0"
  },
+ "weak": [
+  "dj_starts"
+ ],
  "requires": [
   "core",
   "seq-events"

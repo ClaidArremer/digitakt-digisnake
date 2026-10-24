@@ -156,6 +156,13 @@ static volatile unsigned char reset_req[TRACKS];
  * step, so step 1 is always the path's start (DIGISNAKE 1.2). */
 static volatile unsigned char prep[TRACKS], rewind[TRACKS];
 
+/* DIRECT JUMP for the Digitakt (digitakt-directjump 1.0 or later), when the build
+ * has it: its count of pattern starts (START ON BAR). When it moves, every snake
+ * starts its path again with the pattern, so the groove relaunches together. A
+ * weak import (mod.json): without DIRECT JUMP it reads 0 and never moves. */
+extern volatile uint32_t dj_starts;
+static uint32_t dj_seen[TRACKS];
+
 /* ---- playback (interrupt level, in the sequencer's step fire) ---------- */
 struct play {
     unsigned char k;            /* the path step, 0..len-1 */
@@ -264,6 +271,7 @@ void digisnake_trig(int32_t track, int32_t step, int32_t first, uint32_t *trig)
         if (TRANSPORT == 0) {               /* stopped: prepare the first step */
             prep[track] = 1;
             rewind[track] = reset_req[track] = 0;
+            dj_seen[track] = dj_starts;
             start(p, s, len);
         } else if (prep[track] || rewind[track]) {
             int n;                          /* the first fire after PLAY */
@@ -271,8 +279,9 @@ void digisnake_trig(int32_t track, int32_t step, int32_t first, uint32_t *trig)
             start(p, s, len);
             for (n = 0; n < step && n < SQ_STEPS; n++)
                 advance(p, s, len, &irq_rand);
-        } else if (reset_req[track]) {
+        } else if (reset_req[track] || dj_starts != dj_seen[track]) {
             reset_req[track] = 0;
+            dj_seen[track] = dj_starts;     /* a pattern start: from the path's start */
             start(p, s, len);
         } else {
             advance(p, s, len, &irq_rand);
