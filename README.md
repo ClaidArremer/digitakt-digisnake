@@ -12,6 +12,11 @@ the cell it lands on. It runs on all 8 audio tracks (a note is the sample's pitc
 
 By Robbie (tested on a Digitakt mk1, OS 1.54). GPL-2.0-or-later.
 
+**DIGISNAKE carries on in [DIGISEQ for Digitakt](https://github.com/ClaidArremer/digitakt-digiseq)**, as its SNAKE
+type, unchanged, next to a second sequencer type, 185 (a stage sequencer after ML-185). Each track picks its own
+type there. Use one or the other, not both: DIGISEQ replaces DIGISNAKE in a build. DIGISNAKE for Digitakt 0.3
+stays here for builds without DIGISEQ.
+
 > Unofficial and unsupported. Flashing modified firmware is at your own risk; the stock Digitakt OS always
 > recovers the unit (send the stock .syx from the boot menu).
 
